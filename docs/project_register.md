@@ -21,6 +21,7 @@ This is the single place to record project decisions, recommendations for a futu
 | D-006 | 2026-10-09 | Implementation decision | Decided | Compare LoRA against phase 3.2 full SFT with matched model, data, seed, optimizer rate, epochs, prompt format, and evaluation. | A larger dataset or tuned-method comparison is needed. |
 | D-007 | 2026-10-09 | Implementation decision | Decided | Teach pairwise reward modeling with a frozen phase 3.2 backbone and a trained scalar score head. | A larger preference dataset supports full reward-model tuning. |
 | D-008 | 2026-10-09 | Implementation decision | Decided | Teach DPO from the phase 3.2 SFT checkpoint with a frozen reference and LoRA policy, then report held-out implicit reward margins. | More reviewed preference pairs support a meaningful comparison. |
+| D-009 | 2026-10-09 | Implementation decision | Decided | Teach reasoning data through explicit evidence IDs and final answers, preserving prepared splits and avoiding claims about hidden reasoning quality. | Reviewed evidence-conditioned training data becomes available. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -40,7 +41,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md) · [Completion commit `272d049`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/272d049b37979c5de8495eadaebbbde3cf4755e2); adapter reload matched validation loss; all 5 tests pass. |
 | 3.4 | RLHF foundations | **Complete** (2026-10-09) | [Results](../llm_training/04_rlhf_foundations/README.md) · [Completion commit `4778802`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/47788028d99bb46471f945ed97a95ae7ac8d2c1d); checkpoint reload matched test margin; all 7 tests pass. |
 | 3.5 | DPO | **Complete** (2026-10-09) | [Results](../llm_training/05_dpo/README.md) · [Completion commit `d8e1fc6`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d8e1fc6119dda66bb02ea8cb72090a19bd4f0712); adapter reload matched test margin; all 9 tests pass. |
-| 3.6 | Reasoning | Not started | Evaluate a reasoning-focused training exercise. |
+| 3.6 | Reasoning | **Complete** (2026-10-09) | [Results](../llm_training/06_reasoning/README.md); six structured examples and held-out baseline checked; all 11 tests pass. |
 | 3.7 | Distillation | Not started | Compare teacher and student quality, latency, and cost. |
 | 4.1 | Reward design | Not started | Define and test task rewards. |
 | 4.2 | Policy gradients | Not started | Run a small policy-gradient exercise. |
@@ -112,6 +113,14 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale and evidence:** A frozen SFT reference and a LoRA policy expose the DPO log-probability objective without a separate reward model. The adapter trained on four pairs (4/4 correctly ranked), but validation and test each remained 0/1. The reloaded adapter matched the test implicit reward margin (-0.0149), and the generated test response still failed the required-term check. [Detailed results](../llm_training/05_dpo/README.md).
 
 **Consequence:** DPO mechanics are demonstrated; no support-quality gain is established. Revisit with a larger reviewed preference set.
+
+### D-009 — Evidence-linked reasoning format
+
+**Source:** User request on 2026-10-09 to continue the learning phases.
+
+**Rationale and evidence:** Six synthetic tickets were converted to question, numbered evidence, evidence IDs, and approved-answer targets without changing their split. All six gold records passed format and phrase checks. The one held-out phase 3.2 SFT response had no citation and missed required terms. [Detailed results](../llm_training/06_reasoning/README.md).
+
+**Consequence:** The project now has an explicit, testable reasoning-data format. Citation validity alone cannot establish support or answer quality; a later training run requires substantially more reviewed examples.
 
 ### R-001 and R-002 — Model and compute path
 
