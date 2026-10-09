@@ -20,6 +20,7 @@ This is the single place to record project decisions, recommendations for a futu
 | D-005 | 2026-10-09 | Workflow decision | Decided | Push a separate completion commit for each finished phase using `Complete phase X.Y: <topic>`. | The user changes the repository workflow. |
 | D-006 | 2026-10-09 | Implementation decision | Decided | Compare LoRA against phase 3.2 full SFT with matched model, data, seed, optimizer rate, epochs, prompt format, and evaluation. | A larger dataset or tuned-method comparison is needed. |
 | D-007 | 2026-10-09 | Implementation decision | Decided | Teach pairwise reward modeling with a frozen phase 3.2 backbone and a trained scalar score head. | A larger preference dataset supports full reward-model tuning. |
+| D-008 | 2026-10-09 | Implementation decision | Decided | Teach DPO from the phase 3.2 SFT checkpoint with a frozen reference and LoRA policy, then report held-out implicit reward margins. | More reviewed preference pairs support a meaningful comparison. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -38,7 +39,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 3.2 | Supervised fine-tuning | **Complete** (2026-10-09) | [Results](../llm_training/02_supervised_fine_tuning/README.md) · [Completion commit `d06eafa`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d06eafa2d2f534b879d117d5e0aa3c5f14838313); checkpoint reload matched validation loss; all 4 tests pass. |
 | 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md) · [Completion commit `272d049`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/272d049b37979c5de8495eadaebbbde3cf4755e2); adapter reload matched validation loss; all 5 tests pass. |
 | 3.4 | RLHF foundations | **Complete** (2026-10-09) | [Results](../llm_training/04_rlhf_foundations/README.md) · [Completion commit `4778802`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/47788028d99bb46471f945ed97a95ae7ac8d2c1d); checkpoint reload matched test margin; all 7 tests pass. |
-| 3.5 | DPO | Not started | Train on preferred/rejected pairs and compare with SFT. |
+| 3.5 | DPO | **Complete** (2026-10-09) | [Results](../llm_training/05_dpo/README.md); adapter reload matched test margin; all 9 tests pass. |
 | 3.6 | Reasoning | Not started | Evaluate a reasoning-focused training exercise. |
 | 3.7 | Distillation | Not started | Compare teacher and student quality, latency, and cost. |
 | 4.1 | Reward design | Not started | Define and test task rewards. |
@@ -103,6 +104,14 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale and evidence:** A frozen SFT backbone plus a 576-parameter scalar head makes the Bradley–Terry preference objective runnable on the available CPU. Training ranked 4/4 pairs correctly, but the one validation pair remained incorrect (0/1) and its margin worsened from -0.328 to -0.375. The one test pair ranked correctly (1/1); checkpoint reload preserved its 1.6875 margin. [Detailed results](../llm_training/04_rlhf_foundations/README.md).
 
 **Consequence:** Phase 3.4 demonstrates preference-data validation, pairwise loss, ranking metrics, and checkpoint verification. This model is not validated for policy optimization or enterprise use; more reviewed pairs and broader held-out evaluation are needed.
+
+### D-008 — DPO exercise
+
+**Source:** User request on 2026-10-09 to complete the remaining phases in order. The phase 3.2 SFT checkpoint and the same organization-isolated preference splits are reused.
+
+**Rationale and evidence:** A frozen SFT reference and a LoRA policy expose the DPO log-probability objective without a separate reward model. The adapter trained on four pairs (4/4 correctly ranked), but validation and test each remained 0/1. The reloaded adapter matched the test implicit reward margin (-0.0149), and the generated test response still failed the required-term check. [Detailed results](../llm_training/05_dpo/README.md).
+
+**Consequence:** DPO mechanics are demonstrated; no support-quality gain is established. Revisit with a larger reviewed preference set.
 
 ### R-001 and R-002 — Model and compute path
 

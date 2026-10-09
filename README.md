@@ -49,3 +49,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 3.3 LoRA / PEFT](llm_training/03_lora_peft/README.md) compares a saved LoRA adapter with the phase 3.2 full checkpoint under matched settings.
 
 [Phase 3.4 RLHF foundations](llm_training/04_rlhf_foundations/README.md) trains a small pairwise reward model and reports held-out ranking.
+
+[Phase 3.5 DPO](llm_training/05_dpo/README.md) trains a preference adapter against the frozen SFT reference and reports held-out margins.
