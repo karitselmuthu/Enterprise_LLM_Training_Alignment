@@ -63,3 +63,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 4.3 PPO](reinforcement_learning/03_ppo/README.md) adds clipped policy updates and measured rollout KL to the response selector.
 
 [Phase 4.4 RLHF](reinforcement_learning/04_rlhf/README.md) uses the phase 3.4 learned reward scores in the PPO response selector.
+
+[Phase 4.5 GRPO](reinforcement_learning/05_grpo/README.md) trains the response selector with group-relative advantages and a reference KL penalty.
