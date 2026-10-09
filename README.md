@@ -61,3 +61,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 4.2 policy gradients](reinforcement_learning/02_policy_gradients/README.md) trains a small response-selection policy with REINFORCE.
 
 [Phase 4.3 PPO](reinforcement_learning/03_ppo/README.md) adds clipped policy updates and measured rollout KL to the response selector.
+
+[Phase 4.4 RLHF](reinforcement_learning/04_rlhf/README.md) uses the phase 3.4 learned reward scores in the PPO response selector.

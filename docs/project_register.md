@@ -48,7 +48,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 4.1 | Reward design | **Complete** (2026-10-09) | [Results](../reinforcement_learning/01_reward_design/README.md) · [Completion commit `8807f26`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/8807f267c480a54b24d387ee16e227d54ca6030c); six pair scores and reward-gaming test verified; all 13 tests pass. |
 | 4.2 | Policy gradients | **Complete** (2026-10-10) | [Results](../reinforcement_learning/02_policy_gradients/README.md) · [Completion commit `23d124d`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/23d124d6d96a0587a31a1ce4b6781e9fdeabd34a); 400 sampled updates and held-out policy check; all 15 tests pass. |
 | 4.3 | PPO | **Complete** (2026-10-10) | [Results](../reinforcement_learning/03_ppo/README.md) · [Completion commit `500cf52`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/500cf5218ffde0c19a8955c5726fed8b313a2f07); 200 actions, clipped updates, and held-out policy check; all 18 tests pass. |
-| 4.4 | RLHF | Not started | Connect reward modeling and policy optimization. |
+| 4.4 | RLHF | **Complete** (2026-10-10) | [Results](../reinforcement_learning/04_rlhf/README.md); saved reward-model scores drive PPO selection and expose validation error; all 20 tests pass. |
 | 4.5 | GRPO | Not started | Train and evaluate a GRPO policy. |
 | 4.6 | RLVR | Not started | Train on a task with verifiable rewards. |
 
