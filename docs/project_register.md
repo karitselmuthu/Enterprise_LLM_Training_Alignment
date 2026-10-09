@@ -1,0 +1,84 @@
+# Project decision and recommendation register
+
+This is the single place to record project decisions, recommendations for a future enterprise pilot, and unresolved questions. Update it when a material choice is made in a project discussion. A recommendation becomes a decision only when the user explicitly accepts it or the project proceeds on that basis with the choice recorded. Keep superseded entries for history.
+
+## Status key
+
+- **Decided:** Explicitly chosen by the user or implemented as the current project direction.
+- **Recommended:** Proposed; awaiting a decision or validation.
+- **Open:** A question that can affect implementation.
+- **Superseded:** Replaced by a later entry, with a link to it.
+
+## Register
+
+| ID | Date (IST) | Kind | Status | Summary | Revisit when |
+| --- | --- | --- | --- | --- | --- |
+| D-001 | 2026-10-09 | Decision | Decided | Build this as a learning project first. | Enterprise pilot work begins. |
+| D-002 | 2026-10-09 | Decision | Decided | Use a shared, organization-isolated dataset split and fixed evaluation cases for comparisons. | The source data or leakage risks change. |
+| D-003 | 2026-10-09 | Implementation decision | Decided | Teach phase 3.1 with a standard-library character bigram model and explicitly show its limits. | A Transformer pretraining exercise is added. |
+| R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
+| R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
+| R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
+| R-004 | 2026-10-09 | Enterprise recommendation | Recommended | Before real-ticket training, obtain approved, de-identified data and current policy/knowledge documents; establish rights, retention, and human review. | Real enterprise data is introduced. |
+| R-005 | 2026-10-09 | Enterprise recommendation | Recommended | Evaluate factual grounding, policy adherence, escalation, and human-rated answer quality on a fixed test set. The current phrase checker is a narrow baseline. | A model is considered for ticket-system use. |
+| R-006 | 2026-10-09 | Enterprise recommendation | Recommended | Integrate through current approved knowledge retrieval, access control, logging, and human handoff after model review. | Ticket-system API and deployment requirements are known. |
+| O-001 | 2026-10-09 | Question | Open | Which enterprise policies and ticket-system API would govern a later pilot? | Pilot planning begins. |
+
+## Phase progress
+
+**Completion rule:** Mark a phase **Complete** only when its hands-on artifact runs, its stated checks pass, and its results and limitations are documented. Use **In progress** while implementing or checking it. Later phases remain **Not started** until work begins.
+
+| Phase | Topic | Status | Completion evidence or next gate |
+| --- | --- | --- | --- |
+| 3.1 | Pretraining | **Complete** (2026-10-09) | [Trainer and observed results](../llm_training/01_pretraining/README.md); checkpoint reload and all 3 tests pass. |
+| 3.2 | Supervised fine-tuning | Not started | Fine-tune a pretrained model; report held-out results and checkpoint. |
+| 3.3 | LoRA / PEFT | Not started | Compare full and LoRA SFT with matched data and evaluation. |
+| 3.4 | RLHF foundations | Not started | Train and evaluate a preference reward model. |
+| 3.5 | DPO | Not started | Train on preferred/rejected pairs and compare with SFT. |
+| 3.6 | Reasoning | Not started | Evaluate a reasoning-focused training exercise. |
+| 3.7 | Distillation | Not started | Compare teacher and student quality, latency, and cost. |
+| 4.1 | Reward design | Not started | Define and test task rewards. |
+| 4.2 | Policy gradients | Not started | Run a small policy-gradient exercise. |
+| 4.3 | PPO | Not started | Train and evaluate a PPO policy. |
+| 4.4 | RLHF | Not started | Connect reward modeling and policy optimization. |
+| 4.5 | GRPO | Not started | Train and evaluate a GRPO policy. |
+| 4.6 | RLVR | Not started | Train on a task with verifiable rewards. |
+
+## Decision notes
+
+### D-001 — Learning project first
+
+**Source:** User decision in the project discussion on 2026-10-09. The immediate goal is hands-on understanding of pretraining, SFT, LoRA, preference learning, DPO, reasoning, distillation, and RL concepts. Enterprise deployment is a later possibility.
+
+**Consequence:** Synthetic data is adequate for wiring and teaching exercises. No current result should be presented as proof of enterprise readiness.
+
+### D-002 — Shared splits and evaluation
+
+**Source:** Implemented in `shared/datasets/prepare.py` and `shared/evaluation/evaluate.py` on 2026-10-09. The split groups by `org_id`; the sample contains only six synthetic tickets.
+
+**Consequence:** Future model comparisons can reuse the same held-out ticket IDs. The current phrase metrics do not establish factual accuracy or full policy compliance.
+
+### D-003 — Introductory pretraining model
+
+**Source:** Implementation choice made on 2026-10-09 to start the user-requested step-by-step learning path using the available standard-library Python environment.
+
+**Rationale and evidence:** The local environment has no NumPy, PyTorch, or MLX installed. The character bigram trainer completed a deterministic run: training loss 3.8918 to 2.0013 and validation loss 3.8918 to 3.0707. The generated text is mostly incoherent. The checkpoint reload check and all three repository tests passed.
+
+**Consequence:** Phase 3.1 demonstrates next-token training, validation, checkpointing, and generation. It does not teach attention or Transformer architecture; that remains a possible extension.
+
+### R-001 and R-002 — Model and compute path
+
+**Rationale:** A tiny scratch model teaches pretraining mechanics. A small pretrained base model enables controlled full-versus-LoRA comparisons on constrained hardware. A somewhat larger model can test support response quality with LoRA. Online RL adds generation and training memory costs.
+
+**Evidence checked 2026-10-09:** [SmolLM2-135M model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M), [Qwen3-0.6B model card](https://huggingface.co/Qwen/Qwen3-0.6B), [MLX LM documentation](https://github.com/ml-explore/mlx-lm), [TRL trainer documentation](https://huggingface.co/docs/trl/index). Actual fit and runtime have not been measured in this project.
+
+### R-003 to R-006 — Future enterprise path
+
+**Rationale:** A deployment decision needs representative approved data, current organizational rules, meaningful evaluation, and operational controls. These recommendations are conditional; they do not turn the learning project into a deployment project.
+
+## Add an entry
+
+1. Assign the next `D-`, `R-`, or `O-` ID and add a row to the register.
+2. Record the date, who made or accepted the choice, the reason and evidence, its consequence, and the trigger for revisiting it.
+3. Keep recommendations marked **Recommended** until a decision is made. Mark replaced entries **Superseded** and link to the replacement.
+4. Update **Phase progress** after each phase milestone, with a link to its artifact and verified results.

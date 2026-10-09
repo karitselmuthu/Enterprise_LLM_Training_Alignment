@@ -1,0 +1,2 @@
+# The runnable data and evaluation foundation uses the Python standard library.
+# Add training dependencies with pinned versions when a model and hardware target are chosen.
