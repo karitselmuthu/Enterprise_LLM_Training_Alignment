@@ -51,7 +51,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 4.3 | PPO | **Complete** (2026-10-10) | [Results](../reinforcement_learning/03_ppo/README.md) · [Completion commit `500cf52`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/500cf5218ffde0c19a8955c5726fed8b313a2f07); 200 actions, clipped updates, and held-out policy check; all 18 tests pass. |
 | 4.4 | RLHF | **Complete** (2026-10-10) | [Results](../reinforcement_learning/04_rlhf/README.md) · [Completion commit `4a7c3b0`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/4a7c3b0fe7440a151d1351447d425e4bb8be0f82); saved reward-model scores drive PPO selection and expose validation error; all 20 tests pass. |
 | 4.5 | GRPO | **Complete** (2026-10-10) | [Results](../reinforcement_learning/05_grpo/README.md) · [Completion commit `a55a2d0`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/a55a2d051380e9b87dc0ba608ada6b6e54841a1f); group-relative updates, clipping, and held-out policy check; all 23 tests pass. |
-| 4.6 | RLVR | **Complete** (2026-10-10) | [Results](../reinforcement_learning/06_rlvr/README.md); 20,000 updates, exact verifier, and held-out failure documented; all 26 tests pass. |
+| 4.6 | RLVR | **Complete** (2026-10-10) | [Results](../reinforcement_learning/06_rlvr/README.md) · [Completion commit `d493fa2`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d493fa232663bf184224be3d14a6218518c02af3); 20,000 updates, exact verifier, and held-out failure documented; all 26 tests pass. |
 
 ## Decision notes
 
