@@ -22,6 +22,7 @@ This is the single place to record project decisions, recommendations for a futu
 | D-007 | 2026-10-09 | Implementation decision | Decided | Teach pairwise reward modeling with a frozen phase 3.2 backbone and a trained scalar score head. | A larger preference dataset supports full reward-model tuning. |
 | D-008 | 2026-10-09 | Implementation decision | Decided | Teach DPO from the phase 3.2 SFT checkpoint with a frozen reference and LoRA policy, then report held-out implicit reward margins. | More reviewed preference pairs support a meaningful comparison. |
 | D-009 | 2026-10-09 | Implementation decision | Decided | Teach reasoning data through explicit evidence IDs and final answers, preserving prepared splits and avoiding claims about hidden reasoning quality. | Reviewed evidence-conditioned training data becomes available. |
+| D-010 | 2026-10-09 | Implementation decision | Decided | Teach distillation with a frozen SmolLM2-360M teacher, a 135M LoRA student, and a response-token soft/hard loss on the prepared support split. | Representative data or better teacher responses become available. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -42,7 +43,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 3.4 | RLHF foundations | **Complete** (2026-10-09) | [Results](../llm_training/04_rlhf_foundations/README.md) · [Completion commit `4778802`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/47788028d99bb46471f945ed97a95ae7ac8d2c1d); checkpoint reload matched test margin; all 7 tests pass. |
 | 3.5 | DPO | **Complete** (2026-10-09) | [Results](../llm_training/05_dpo/README.md) · [Completion commit `d8e1fc6`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d8e1fc6119dda66bb02ea8cb72090a19bd4f0712); adapter reload matched test margin; all 9 tests pass. |
 | 3.6 | Reasoning | **Complete** (2026-10-09) | [Results](../llm_training/06_reasoning/README.md) · [Completion commit `cb19b98`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/cb19b98339a9679746fe7284eb076d0f78bdb70c); six structured examples and held-out baseline checked; all 11 tests pass. |
-| 3.7 | Distillation | Not started | Compare teacher and student quality, latency, and cost. |
+| 3.7 | Distillation | **Complete** (2026-10-09) | [Results](../llm_training/07_distillation/README.md); teacher/student loss and CPU time measured, adapter reload verified; all 11 tests pass. |
 | 4.1 | Reward design | Not started | Define and test task rewards. |
 | 4.2 | Policy gradients | Not started | Run a small policy-gradient exercise. |
 | 4.3 | PPO | Not started | Train and evaluate a PPO policy. |
@@ -121,6 +122,14 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale and evidence:** Six synthetic tickets were converted to question, numbered evidence, evidence IDs, and approved-answer targets without changing their split. All six gold records passed format and phrase checks. The one held-out phase 3.2 SFT response had no citation and missed required terms. [Detailed results](../llm_training/06_reasoning/README.md).
 
 **Consequence:** The project now has an explicit, testable reasoning-data format. Citation validity alone cannot establish support or answer quality; a later training run requires substantially more reviewed examples.
+
+### D-010 — Small teacher to student distillation
+
+**Source:** User request on 2026-10-09 to continue all remaining learning phases.
+
+**Rationale and evidence:** A frozen SmolLM2-360M teacher provides response-token distributions to a 135M LoRA student. Four updates reduced student validation answer-token loss from 3.1469 to 3.1169 and test loss from 2.7208 to 2.6868. The teacher remained better (2.8865 and 2.2775). The adapter reload matched test loss. Measured single-run CPU timing favored the smaller model but is noisy. [Detailed results](../llm_training/07_distillation/README.md).
+
+**Consequence:** The transfer mechanism and size/latency tradeoff are visible. One synthetic test response passing phrase checks does not establish enterprise answer quality or production cost.
 
 ### R-001 and R-002 — Model and compute path
 

@@ -53,3 +53,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 3.5 DPO](llm_training/05_dpo/README.md) trains a preference adapter against the frozen SFT reference and reports held-out margins.
 
 [Phase 3.6 reasoning](llm_training/06_reasoning/README.md) builds evidence-linked answer examples and checks a held-out SFT response.
+
+[Phase 3.7 distillation](llm_training/07_distillation/README.md) transfers teacher token probabilities to a smaller student and measures held-out loss and CPU time.
