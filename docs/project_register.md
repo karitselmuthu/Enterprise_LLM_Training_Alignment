@@ -41,7 +41,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md) · [Completion commit `272d049`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/272d049b37979c5de8495eadaebbbde3cf4755e2); adapter reload matched validation loss; all 5 tests pass. |
 | 3.4 | RLHF foundations | **Complete** (2026-10-09) | [Results](../llm_training/04_rlhf_foundations/README.md) · [Completion commit `4778802`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/47788028d99bb46471f945ed97a95ae7ac8d2c1d); checkpoint reload matched test margin; all 7 tests pass. |
 | 3.5 | DPO | **Complete** (2026-10-09) | [Results](../llm_training/05_dpo/README.md) · [Completion commit `d8e1fc6`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d8e1fc6119dda66bb02ea8cb72090a19bd4f0712); adapter reload matched test margin; all 9 tests pass. |
-| 3.6 | Reasoning | **Complete** (2026-10-09) | [Results](../llm_training/06_reasoning/README.md); six structured examples and held-out baseline checked; all 11 tests pass. |
+| 3.6 | Reasoning | **Complete** (2026-10-09) | [Results](../llm_training/06_reasoning/README.md) · [Completion commit `cb19b98`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/cb19b98339a9679746fe7284eb076d0f78bdb70c); six structured examples and held-out baseline checked; all 11 tests pass. |
 | 3.7 | Distillation | Not started | Compare teacher and student quality, latency, and cost. |
 | 4.1 | Reward design | Not started | Define and test task rewards. |
 | 4.2 | Policy gradients | Not started | Run a small policy-gradient exercise. |
