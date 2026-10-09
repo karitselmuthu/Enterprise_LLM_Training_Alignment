@@ -24,6 +24,7 @@ This is the single place to record project decisions, recommendations for a futu
 | D-009 | 2026-10-09 | Implementation decision | Decided | Teach reasoning data through explicit evidence IDs and final answers, preserving prepared splits and avoiding claims about hidden reasoning quality. | Reviewed evidence-conditioned training data becomes available. |
 | D-010 | 2026-10-09 | Implementation decision | Decided | Teach distillation with a frozen SmolLM2-360M teacher, a 135M LoRA student, and a response-token soft/hard loss on the prepared support split. | Representative data or better teacher responses become available. |
 | D-011 | 2026-10-09 | Implementation decision | Decided | Teach phases 4.1–4.5 with a small two-response selection environment and fixed support-ticket splits; treat it as an RL mechanics exercise, not LLM generation. | Compute and reviewed response data support online LLM RL. |
+| D-012 | 2026-10-10 | Implementation decision | Decided | Teach RLVR with exact arithmetic feedback and held-out operand pairs to expose the difference between verifiable reward and generalization. | A stronger policy or larger benchmark is available. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -50,7 +51,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 4.3 | PPO | **Complete** (2026-10-10) | [Results](../reinforcement_learning/03_ppo/README.md) · [Completion commit `500cf52`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/500cf5218ffde0c19a8955c5726fed8b313a2f07); 200 actions, clipped updates, and held-out policy check; all 18 tests pass. |
 | 4.4 | RLHF | **Complete** (2026-10-10) | [Results](../reinforcement_learning/04_rlhf/README.md) · [Completion commit `4a7c3b0`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/4a7c3b0fe7440a151d1351447d425e4bb8be0f82); saved reward-model scores drive PPO selection and expose validation error; all 20 tests pass. |
 | 4.5 | GRPO | **Complete** (2026-10-10) | [Results](../reinforcement_learning/05_grpo/README.md) · [Completion commit `a55a2d0`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/a55a2d051380e9b87dc0ba608ada6b6e54841a1f); group-relative updates, clipping, and held-out policy check; all 23 tests pass. |
-| 4.6 | RLVR | Not started | Train on a task with verifiable rewards. |
+| 4.6 | RLVR | **Complete** (2026-10-10) | [Results](../reinforcement_learning/06_rlvr/README.md); 20,000 updates, exact verifier, and held-out failure documented; all 26 tests pass. |
 
 ## Decision notes
 
@@ -139,6 +140,14 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale and evidence:** The six synthetic tickets supply two candidate responses each and a prepared organization-isolated split. A rule reward prefers the approved answer in 6/6 cases, but a keyword-stuffed response can obtain full reward. [Phase 4.1 results](../reinforcement_learning/01_reward_design/README.md).
 
 **Consequence:** Subsequent small policy exercises can isolate REINFORCE, PPO, learned-reward RLHF, and GRPO mechanics. They do not train or validate a generative support LLM; reward hacking and split size remain explicit limitations.
+
+### D-012 — Verifiable-reward task
+
+**Source:** Implementation decision on 2026-10-10 for the final learning phase.
+
+**Rationale and evidence:** Exact integer addition permits an unambiguous programmatic reward. A one-step policy trained for 20,000 sampled updates reached 14/20 greedy accuracy on training pairs but 0/5 on held-out pairs. [Detailed results](../reinforcement_learning/06_rlvr/README.md).
+
+**Consequence:** A reliable verifier does not guarantee a policy learns a transferable rule. Future RLVR work needs a stronger model, larger problem distribution, and separate held-out evaluation.
 
 ### R-001 and R-002 — Model and compute path
 

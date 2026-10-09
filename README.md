@@ -65,3 +65,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 4.4 RLHF](reinforcement_learning/04_rlhf/README.md) uses the phase 3.4 learned reward scores in the PPO response selector.
 
 [Phase 4.5 GRPO](reinforcement_learning/05_grpo/README.md) trains the response selector with group-relative advantages and a reference KL penalty.
+
+[Phase 4.6 RLVR](reinforcement_learning/06_rlvr/README.md) uses exact arithmetic rewards and reports failure on held-out input pairs.
