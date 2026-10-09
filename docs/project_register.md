@@ -35,7 +35,7 @@ This is the single place to record project decisions, recommendations for a futu
 | --- | --- | --- | --- |
 | 3.1 | Pretraining | **Complete** (2026-10-09) | [Results](../llm_training/01_pretraining/README.md) · [Completion commit `3ad9f15`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/3ad9f15bc7fe76b68640da38065d35c8bad879c4); checkpoint reload and all 3 tests pass. |
 | 3.2 | Supervised fine-tuning | **Complete** (2026-10-09) | [Results](../llm_training/02_supervised_fine_tuning/README.md) · [Completion commit `d06eafa`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d06eafa2d2f534b879d117d5e0aa3c5f14838313); checkpoint reload matched validation loss; all 4 tests pass. |
-| 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md); adapter reload matched validation loss; all 5 tests pass. |
+| 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md) · [Completion commit `272d049`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/272d049b37979c5de8495eadaebbbde3cf4755e2); adapter reload matched validation loss; all 5 tests pass. |
 | 3.4 | RLHF foundations | Not started | Train and evaluate a preference reward model. |
 | 3.5 | DPO | Not started | Train on preferred/rejected pairs and compare with SFT. |
 | 3.6 | Reasoning | Not started | Evaluate a reasoning-focused training exercise. |

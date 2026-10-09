@@ -9,3 +9,5 @@ Keep `README.md` linked to the register so the user has one discoverable place f
 For learning phases, update the **Phase progress** table in `docs/project_register.md`. Mark a phase complete only after its artifact runs, checks pass, and results and limitations are documented.
 
 When a phase is completed, commit its work using `Complete phase X.Y: <topic>` (for example, `Complete phase 3.2: supervised fine-tuning`) and push it to `origin/main` when the user has authorized repository updates. Keep one completion commit per phase and preserve earlier phase history.
+
+After the completion commit is pushed, add its full GitHub commit URL to the corresponding row in the phase tracker and push that small documentation update.
