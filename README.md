@@ -45,3 +45,5 @@ See [Project decision and recommendation register](docs/project_register.md) for
 Start with [phase 3.1 pretraining](llm_training/01_pretraining/README.md). The [phase progress tracker](docs/project_register.md#phase-progress) records completion evidence for each lesson.
 
 Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine_tuning/README.md). It uses the optional dependencies in `requirements-sft.txt`.
+
+[Phase 3.3 LoRA / PEFT](llm_training/03_lora_peft/README.md) compares a saved LoRA adapter with the phase 3.2 full checkpoint under matched settings.

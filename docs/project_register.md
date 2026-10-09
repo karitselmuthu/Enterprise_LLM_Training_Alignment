@@ -18,6 +18,7 @@ This is the single place to record project decisions, recommendations for a futu
 | D-003 | 2026-10-09 | Implementation decision | Decided | Teach phase 3.1 with a standard-library character bigram model and explicitly show its limits. | A Transformer pretraining exercise is added. |
 | D-004 | 2026-10-09 | Implementation decision | Decided | Use SmolLM2-135M and assistant-response-only loss for phase 3.2 SFT; compare baseline and trained checkpoints on the same held-out ticket. | A larger dataset or model is selected. |
 | D-005 | 2026-10-09 | Workflow decision | Decided | Push a separate completion commit for each finished phase using `Complete phase X.Y: <topic>`. | The user changes the repository workflow. |
+| D-006 | 2026-10-09 | Implementation decision | Decided | Compare LoRA against phase 3.2 full SFT with matched model, data, seed, optimizer rate, epochs, prompt format, and evaluation. | A larger dataset or tuned-method comparison is needed. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -34,7 +35,7 @@ This is the single place to record project decisions, recommendations for a futu
 | --- | --- | --- | --- |
 | 3.1 | Pretraining | **Complete** (2026-10-09) | [Results](../llm_training/01_pretraining/README.md) · [Completion commit `3ad9f15`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/3ad9f15bc7fe76b68640da38065d35c8bad879c4); checkpoint reload and all 3 tests pass. |
 | 3.2 | Supervised fine-tuning | **Complete** (2026-10-09) | [Results](../llm_training/02_supervised_fine_tuning/README.md) · [Completion commit `d06eafa`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d06eafa2d2f534b879d117d5e0aa3c5f14838313); checkpoint reload matched validation loss; all 4 tests pass. |
-| 3.3 | LoRA / PEFT | Not started | Compare full and LoRA SFT with matched data and evaluation. |
+| 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md); adapter reload matched validation loss; all 5 tests pass. |
 | 3.4 | RLHF foundations | Not started | Train and evaluate a preference reward model. |
 | 3.5 | DPO | Not started | Train on preferred/rejected pairs and compare with SFT. |
 | 3.6 | Reasoning | Not started | Evaluate a reasoning-focused training exercise. |
@@ -85,6 +86,14 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale:** Separate, consistently named commits show which phase was completed and make progress reviewable in Git history.
 
 **Consequence:** The phase 3.1 and 3.2 completion commits use `Complete phase X.Y: <topic>`. Future phase completion work follows the same pattern and is pushed to `origin/main` under the user's authorization.
+
+### D-006 — Controlled LoRA comparison
+
+**Source:** User request on 2026-10-09 to proceed with phase 3.3. Phase 3.2 supplied the full SFT reference and the same prepared ticket split.
+
+**Rationale and evidence:** The LoRA script verified the phase 3.2 manifest and settings and reproduced the pretrained baseline validation loss (3.1469). It trained 460,800 parameters (0.34% of the adapter-wrapped model) and reloaded the adapter with the same validation loss (3.1294). Full SFT had lower validation and test losses; LoRA passed the one-ticket required phrase check because its generated response mostly echoed the prompt. [Detailed comparison](../llm_training/03_lora_peft/README.md).
+
+**Consequence:** Phase 3.3 demonstrates parameter and checkpoint savings plus the limits of a tiny controlled comparison. Neither model produced a good support response; no enterprise-quality or method-superiority conclusion follows.
 
 ### R-001 and R-002 — Model and compute path
 
