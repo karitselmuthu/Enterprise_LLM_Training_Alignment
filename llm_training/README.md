@@ -7,7 +7,7 @@
 | 3.3 | LoRA / PEFT | Compare full SFT and LoRA SFT with matched data, model, and evaluation. |
 | 3.4 | RLHF foundations | Build preference pairs and train a reward model; measure held-out pair ranking. |
 | 3.5 | DPO | Train from the SFT checkpoint on chosen/rejected responses; compare against SFT. |
-| 3.6 | Reasoning | Study a curated reasoning dataset and evaluate visible answer quality without exposing hidden reasoning in support replies. |
-| 3.7 | Distillation | Transfer reviewed teacher responses to a smaller student; compare quality, latency, and cost. |
+| 3.6 | Reasoning | Build evidence-linked final-answer examples and check a held-out SFT response. |
+| 3.7 | Distillation | Transfer a larger teacher's token probabilities to a smaller student; compare loss and local CPU time. |
 
-The shared preparation command already exports SFT and preference files for phases 3.2–3.5. Each lesson should state its model, compute budget, dataset license, baseline, seed, and evaluation criteria before training code is added.
+All lecture 03 phases are complete as learning exercises. The [phase tracker](../docs/project_register.md#phase-progress) links each result and completion commit. The shared preparation command exports SFT and preference files for phases 3.2–3.5. Sample data is synthetic; these runs do not establish enterprise support quality.

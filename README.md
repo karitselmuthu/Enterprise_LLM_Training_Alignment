@@ -2,6 +2,8 @@
 
 A small, reproducible workspace for training and assessing an enterprise support assistant. The example data is synthetic. No ticket-system connection or pretrained model is bundled.
 
+All learning phases 3.1–3.7 and 4.1–4.6 are complete and linked in the [phase tracker](docs/project_register.md#phase-progress). The RL lessons after reward design use small response-selection or arithmetic policies, not online training of a generative LLM. Several held-out results are weak or fail, as recorded in their reports.
+
 ## Pipeline
 
 ```text

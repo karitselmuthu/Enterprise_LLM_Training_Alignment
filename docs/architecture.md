@@ -16,4 +16,4 @@ Keep customer secrets, personal data, internal credentials, and unapproved ticke
 
 ## Current milestone
 
-The repository currently provides the data contract, deterministic organization-isolated splits, SFT and preference export, synthetic sample data, and a small automated evaluation baseline. Training jobs and ticket-system integration are subsequent milestones.
+Learning phases 3.1–3.7 and 4.1–4.6 have runnable artifacts, documented results, and individual completion commits in the [phase tracker](project_register.md#phase-progress). Phases 4.1–4.5 use a small fixed-response selection policy to teach RL mechanics; phase 4.6 uses an arithmetic policy with exact rewards. They do not perform online RL on a generative LLM. The synthetic dataset and narrow metrics do not support enterprise deployment claims. Ticket-system integration remains a future pilot decision because its API and policies are unspecified.
