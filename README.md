@@ -59,3 +59,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 4.1 reward design](reinforcement_learning/01_reward_design/README.md) defines the synthetic response-selection reward and documents how it can be gamed.
 
 [Phase 4.2 policy gradients](reinforcement_learning/02_policy_gradients/README.md) trains a small response-selection policy with REINFORCE.
+
+[Phase 4.3 PPO](reinforcement_learning/03_ppo/README.md) adds clipped policy updates and measured rollout KL to the response selector.
