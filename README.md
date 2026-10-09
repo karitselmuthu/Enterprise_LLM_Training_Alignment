@@ -55,3 +55,5 @@ Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine
 [Phase 3.6 reasoning](llm_training/06_reasoning/README.md) builds evidence-linked answer examples and checks a held-out SFT response.
 
 [Phase 3.7 distillation](llm_training/07_distillation/README.md) transfers teacher token probabilities to a smaller student and measures held-out loss and CPU time.
+
+[Phase 4.1 reward design](reinforcement_learning/01_reward_design/README.md) defines the synthetic response-selection reward and documents how it can be gamed.
