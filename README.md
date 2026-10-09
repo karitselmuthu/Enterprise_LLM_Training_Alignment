@@ -47,3 +47,5 @@ Start with [phase 3.1 pretraining](llm_training/01_pretraining/README.md). The [
 Continue with [phase 3.2 supervised fine-tuning](llm_training/02_supervised_fine_tuning/README.md). It uses the optional dependencies in `requirements-sft.txt`.
 
 [Phase 3.3 LoRA / PEFT](llm_training/03_lora_peft/README.md) compares a saved LoRA adapter with the phase 3.2 full checkpoint under matched settings.
+
+[Phase 3.4 RLHF foundations](llm_training/04_rlhf_foundations/README.md) trains a small pairwise reward model and reports held-out ranking.

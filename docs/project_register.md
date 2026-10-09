@@ -19,6 +19,7 @@ This is the single place to record project decisions, recommendations for a futu
 | D-004 | 2026-10-09 | Implementation decision | Decided | Use SmolLM2-135M and assistant-response-only loss for phase 3.2 SFT; compare baseline and trained checkpoints on the same held-out ticket. | A larger dataset or model is selected. |
 | D-005 | 2026-10-09 | Workflow decision | Decided | Push a separate completion commit for each finished phase using `Complete phase X.Y: <topic>`. | The user changes the repository workflow. |
 | D-006 | 2026-10-09 | Implementation decision | Decided | Compare LoRA against phase 3.2 full SFT with matched model, data, seed, optimizer rate, epochs, prompt format, and evaluation. | A larger dataset or tuned-method comparison is needed. |
+| D-007 | 2026-10-09 | Implementation decision | Decided | Teach pairwise reward modeling with a frozen phase 3.2 backbone and a trained scalar score head. | A larger preference dataset supports full reward-model tuning. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -36,7 +37,7 @@ This is the single place to record project decisions, recommendations for a futu
 | 3.1 | Pretraining | **Complete** (2026-10-09) | [Results](../llm_training/01_pretraining/README.md) · [Completion commit `3ad9f15`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/3ad9f15bc7fe76b68640da38065d35c8bad879c4); checkpoint reload and all 3 tests pass. |
 | 3.2 | Supervised fine-tuning | **Complete** (2026-10-09) | [Results](../llm_training/02_supervised_fine_tuning/README.md) · [Completion commit `d06eafa`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/d06eafa2d2f534b879d117d5e0aa3c5f14838313); checkpoint reload matched validation loss; all 4 tests pass. |
 | 3.3 | LoRA / PEFT | **Complete** (2026-10-09) | [Results](../llm_training/03_lora_peft/README.md) · [Completion commit `272d049`](https://github.com/karitselmuthu/Enterprise_LLM_Training_Alignment/commit/272d049b37979c5de8495eadaebbbde3cf4755e2); adapter reload matched validation loss; all 5 tests pass. |
-| 3.4 | RLHF foundations | Not started | Train and evaluate a preference reward model. |
+| 3.4 | RLHF foundations | **Complete** (2026-10-09) | [Reward-model exercise and results](../llm_training/04_rlhf_foundations/README.md); checkpoint reload matched test margin; all 7 tests pass. |
 | 3.5 | DPO | Not started | Train on preferred/rejected pairs and compare with SFT. |
 | 3.6 | Reasoning | Not started | Evaluate a reasoning-focused training exercise. |
 | 3.7 | Distillation | Not started | Compare teacher and student quality, latency, and cost. |
@@ -94,6 +95,14 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale and evidence:** The LoRA script verified the phase 3.2 manifest and settings and reproduced the pretrained baseline validation loss (3.1469). It trained 460,800 parameters (0.34% of the adapter-wrapped model) and reloaded the adapter with the same validation loss (3.1294). Full SFT had lower validation and test losses; LoRA passed the one-ticket required phrase check because its generated response mostly echoed the prompt. [Detailed comparison](../llm_training/03_lora_peft/README.md).
 
 **Consequence:** Phase 3.3 demonstrates parameter and checkpoint savings plus the limits of a tiny controlled comparison. Neither model produced a good support response; no enterprise-quality or method-superiority conclusion follows.
+
+### D-007 — Pairwise reward-model exercise
+
+**Source:** User request on 2026-10-09 to proceed with phase 3.4. The prepared preference splits and phase 3.2 checkpoint are reused.
+
+**Rationale and evidence:** A frozen SFT backbone plus a 576-parameter scalar head makes the Bradley–Terry preference objective runnable on the available CPU. Training ranked 4/4 pairs correctly, but the one validation pair remained incorrect (0/1) and its margin worsened from -0.328 to -0.375. The one test pair ranked correctly (1/1); checkpoint reload preserved its 1.6875 margin. [Detailed results](../llm_training/04_rlhf_foundations/README.md).
+
+**Consequence:** Phase 3.4 demonstrates preference-data validation, pairwise loss, ranking metrics, and checkpoint verification. This model is not validated for policy optimization or enterprise use; more reviewed pairs and broader held-out evaluation are needed.
 
 ### R-001 and R-002 — Model and compute path
 
