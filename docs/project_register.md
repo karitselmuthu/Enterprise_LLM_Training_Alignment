@@ -16,6 +16,8 @@ This is the single place to record project decisions, recommendations for a futu
 | D-001 | 2026-10-09 | Decision | Decided | Build this as a learning project first. | Enterprise pilot work begins. |
 | D-002 | 2026-10-09 | Decision | Decided | Use a shared, organization-isolated dataset split and fixed evaluation cases for comparisons. | The source data or leakage risks change. |
 | D-003 | 2026-10-09 | Implementation decision | Decided | Teach phase 3.1 with a standard-library character bigram model and explicitly show its limits. | A Transformer pretraining exercise is added. |
+| D-004 | 2026-10-09 | Implementation decision | Decided | Use SmolLM2-135M and assistant-response-only loss for phase 3.2 SFT; compare baseline and trained checkpoints on the same held-out ticket. | A larger dataset or model is selected. |
+| D-005 | 2026-10-09 | Workflow decision | Decided | Push a separate completion commit for each finished phase using `Complete phase X.Y: <topic>`. | The user changes the repository workflow. |
 | R-001 | 2026-10-09 | Model recommendation | Recommended | Use a tiny model from scratch for pretraining; SmolLM2-135M for controlled training comparisons; consider Qwen3-0.6B with LoRA for an assistant pilot. | A model benchmark, memory test, or license review changes the choice. |
 | R-002 | 2026-10-09 | Hardware recommendation | Recommended | Run early exercises locally on the 8 GB Apple-silicon Mac; use a suitable GPU environment for later online RL experiments. | Profiling shows local runs are too slow or memory-limited. |
 | R-003 | 2026-10-09 | Data recommendation | Recommended | For a meaningful pilot, seek roughly 1,000 reviewed responses, 300 independent preference pairs, and 100 held-out tickets across organizations. These are planning targets, not validated minimums. | Real data availability and learning curves are measured. |
@@ -31,7 +33,7 @@ This is the single place to record project decisions, recommendations for a futu
 | Phase | Topic | Status | Completion evidence or next gate |
 | --- | --- | --- | --- |
 | 3.1 | Pretraining | **Complete** (2026-10-09) | [Trainer and observed results](../llm_training/01_pretraining/README.md); checkpoint reload and all 3 tests pass. |
-| 3.2 | Supervised fine-tuning | Not started | Fine-tune a pretrained model; report held-out results and checkpoint. |
+| 3.2 | Supervised fine-tuning | **Complete** (2026-10-09) | [Trainer and observed results](../llm_training/02_supervised_fine_tuning/README.md); checkpoint reload matched validation loss; all 4 tests pass. |
 | 3.3 | LoRA / PEFT | Not started | Compare full and LoRA SFT with matched data and evaluation. |
 | 3.4 | RLHF foundations | Not started | Train and evaluate a preference reward model. |
 | 3.5 | DPO | Not started | Train on preferred/rejected pairs and compare with SFT. |
@@ -65,6 +67,24 @@ This is the single place to record project decisions, recommendations for a futu
 **Rationale and evidence:** The local environment has no NumPy, PyTorch, or MLX installed. The character bigram trainer completed a deterministic run: training loss 3.8918 to 2.0013 and validation loss 3.8918 to 3.0707. The generated text is mostly incoherent. The checkpoint reload check and all three repository tests passed.
 
 **Consequence:** Phase 3.1 demonstrates next-token training, validation, checkpointing, and generation. It does not teach attention or Transformer architecture; that remains a possible extension.
+
+### D-004 — Supervised fine-tuning baseline
+
+**Source:** Implementation choice made on 2026-10-09 for the user's next learning phase. SmolLM2-135M is already cached locally, and the prepared SFT split has four training conversations, one validation conversation, and one held-out test conversation.
+
+**Rationale:** A small permitted pretrained model allows full-parameter training on constrained hardware. Masking the system and user tokens focuses the loss on the approved assistant response. The same test ticket is used for before/after generation and explicit phrase checks.
+
+**Run evidence:** Full-parameter CPU run with PyTorch 2.14.0 and Transformers 5.17.0 completed for two epochs. Validation answer-token loss fell from 3.1469 to 2.9230 and test answer-token loss fell from 2.7208 to 2.2279. The saved checkpoint reloaded with identical validation loss. On the single held-out ticket, the trained response became repetitive and failed a required phrase check that the baseline passed. [Detailed results](../llm_training/02_supervised_fine_tuning/README.md).
+
+**Consequence:** Phase 3.2 demonstrates SFT mechanics and checkpoint comparison. The result does not show support-answer improvement or generalization. Revisit the model and dataset when larger, reviewed examples become available.
+
+### D-005 — Phase completion commits
+
+**Source:** User request on 2026-10-09 to push the project to `karitselmuthu/Enterprise_LLM_Training_Alignment` and repeat the same commit-message pattern for every completed phase.
+
+**Rationale:** Separate, consistently named commits show which phase was completed and make progress reviewable in Git history.
+
+**Consequence:** The phase 3.1 and 3.2 completion commits use `Complete phase X.Y: <topic>`. Future phase completion work follows the same pattern and is pushed to `origin/main` under the user's authorization.
 
 ### R-001 and R-002 — Model and compute path
 
